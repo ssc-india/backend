@@ -11,6 +11,8 @@ import { signupRouter } from './routes/auth/signup';
 import { signinRouter } from './routes/auth/signin';
 import { signoutRouter } from './routes/auth/signout';
 
+import { contentCreateRouter } from './routes/content/create';
+
 const app = express();
 
 app.set('trust proxy', true);
@@ -25,6 +27,8 @@ app.use(cookieSession({
 app.use(signupRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
+
+app.use(contentCreateRouter);
 
 app.all('*', () => {
     throw new NotFoundError();

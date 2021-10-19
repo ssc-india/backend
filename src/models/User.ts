@@ -1,13 +1,20 @@
 import mongoose from 'mongoose';
 
+export enum UserType {
+    REGULAR='REGULAR',
+    MODERATOR='MODERATOR'
+}
+
 interface UserAttrs {
     email: string;
     password: string;
+    type: UserType;
 }
 
-interface UserDoc extends mongoose.Document {
+export interface UserDoc extends mongoose.Document {
     email: string;
     password: string;
+    type: UserType;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -21,6 +28,12 @@ const UserSchema = new mongoose.Schema<UserDoc>({
     },
     password: {
         type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        enum: Object.values(UserType),
+        default: UserType.REGULAR,
         required: true
     }
 }, {

@@ -1,15 +1,28 @@
 import mongoose from 'mongoose';
 import { UserDoc } from './User';
 
+enum ContentTag {
+    INFO='INFO',
+    BLOG='Blog'
+}
+
 interface ContentAttrs {
     author: UserDoc;
+    institute: string;
+    branch: string;
+    tag: ContentTag;
     timestamp: Date;
+    title: string;
     content: string;
 }
 
-interface ContentDoc extends mongoose.Document {
+export interface ContentDoc extends mongoose.Document {
     author: UserDoc;
+    institute: string;
+    branch: string;
+    tag: ContentTag;
     timestamp: Date;
+    title: string;
     content: string;
 }
 
@@ -23,8 +36,25 @@ const ContentSchema = new mongoose.Schema<ContentDoc>({
         ref: 'User',
         required: true
     },
+    institute: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
+    tag: {
+        type: String,
+        enum: Object.values(ContentTag),
+        required: true
+    },
     timestamp: {
         type: mongoose.Schema.Types.Date,
+        required: true
+    },
+    title: {
+        type: String,
         required: true
     },
     content: {

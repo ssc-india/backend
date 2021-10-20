@@ -6,12 +6,18 @@ export enum UserType {
 }
 
 interface UserAttrs {
+    name: string;
+    institute: string;
+    branch: string;
     email: string;
     password: string;
     type: UserType;
 }
 
 export interface UserDoc extends mongoose.Document {
+    name: string;
+    institute: string;
+    branch: string;
     email: string;
     password: string;
     type: UserType;
@@ -22,6 +28,18 @@ interface UserModel extends mongoose.Model<UserDoc> {
 }
 
 const UserSchema = new mongoose.Schema<UserDoc>({
+    name: {
+        type: String,
+        required: true
+    },
+    institute: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true

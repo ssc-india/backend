@@ -1,13 +1,26 @@
 import mongoose from 'mongoose';
 
-interface UserAttrs {
-    email: string;
-    password: string;
+export enum UserType {
+    REGULAR='REGULAR',
+    MODERATOR='MODERATOR'
 }
 
-interface UserDoc extends mongoose.Document {
+interface UserAttrs {
+    name: string;
+    institute: string;
+    branch: string;
     email: string;
     password: string;
+    type: UserType;
+}
+
+export interface UserDoc extends mongoose.Document {
+    name: string;
+    institute: string;
+    branch: string;
+    email: string;
+    password: string;
+    type: UserType;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -15,12 +28,30 @@ interface UserModel extends mongoose.Model<UserDoc> {
 }
 
 const UserSchema = new mongoose.Schema<UserDoc>({
+    name: {
+        type: String,
+        required: true
+    },
+    institute: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
     },
     password: {
         type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        enum: Object.values(UserType),
+        default: UserType.REGULAR,
         required: true
     }
 }, {
@@ -39,5 +70,7 @@ UserSchema.statics.build = (attrs: UserAttrs) => {
 }
 
 const User = mongoose.model<UserDoc, UserModel>('User', UserSchema);
+
+UserSchema.index({ email: "hashed" });
 
 export { User };

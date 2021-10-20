@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { validateRequest } from '../../middlewares/validateRequest';
-import { User } from '../../models/User';
+import { User, UserType } from '../../models/User';
 import { Password } from '../../services/Password';
 
 const router = Router();
@@ -19,7 +19,7 @@ router.post('/auth/signup', [
 ],
 validateRequest,
 async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { name, institute, branch, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -27,7 +27,7 @@ async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await Password.toHash(password);
-    const user = User.build({ email, password: hashedPassword });
+    const user = User.build({ name, institute, branch, email, password: hashedPassword, type: UserType.REGULAR });
     await user.save();
 
     const userJwt = jwt.sign({

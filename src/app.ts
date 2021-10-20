@@ -11,6 +11,11 @@ import { signupRouter } from './routes/auth/signup';
 import { signinRouter } from './routes/auth/signin';
 import { signoutRouter } from './routes/auth/signout';
 
+import { contentCreateRouter } from './routes/content/create';
+import { contentShowRouter } from './routes/content/show';
+import { contentEditRouter } from './routes/content/edit';
+import { contentDeleteRouter } from './routes/content/delete';
+
 const app = express();
 
 app.set('trust proxy', true);
@@ -25,6 +30,11 @@ app.use(cookieSession({
 app.use(signupRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
+
+app.use(contentCreateRouter);
+app.use(contentShowRouter);
+app.use(contentEditRouter);
+app.use(contentDeleteRouter);
 
 app.all('*', () => {
     throw new NotFoundError();

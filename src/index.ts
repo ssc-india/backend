@@ -3,6 +3,10 @@ import mongoose from 'mongoose'
 
 import { DatabaseConnectionError } from './errors/DatabaseConnectionError';
 
+// REMOVE in prod
+import dotenv from 'dotenv';
+dotenv.config();
+
 const start = async () => {
     if (!process.env.JWT_KEY) {
         throw new Error('JWT_KEY not defined');

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { UserDoc } from './User';
 
-enum ContentTag {
+export enum ContentTag {
     INFO='INFO',
     BLOG='Blog'
 }
@@ -75,5 +75,7 @@ ContentSchema.statics.build = (attrs: ContentAttrs) => {
 }
 
 const Content = mongoose.model<ContentDoc, ContentModel>('Content', ContentSchema);
+
+ContentSchema.index({ institute: 1, branch: 1 });
 
 export { Content }

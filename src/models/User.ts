@@ -71,4 +71,6 @@ UserSchema.statics.build = (attrs: UserAttrs) => {
 
 const User = mongoose.model<UserDoc, UserModel>('User', UserSchema);
 
+UserSchema.index({ email: "hashed" });
+
 export { User };

@@ -16,6 +16,8 @@ import { contentShowRouter } from './routes/content/show';
 import { contentEditRouter } from './routes/content/edit';
 import { contentDeleteRouter } from './routes/content/delete';
 
+import { instituteShowRouter } from './routes/institute/show';
+
 const app = express();
 
 app.set('trust proxy', true);
@@ -35,6 +37,8 @@ app.use(contentCreateRouter);
 app.use(contentShowRouter);
 app.use(contentEditRouter);
 app.use(contentDeleteRouter);
+
+app.use(instituteShowRouter);
 
 app.all('*', () => {
     throw new NotFoundError();

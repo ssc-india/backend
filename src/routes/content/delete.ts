@@ -16,7 +16,7 @@ interface UserInfo {
     email: string;
 }
 
-router.post('/content/edit', requireAuth, [
+router.post('/content/delete', requireAuth, [
     body('postId')
         .not()
         .isEmpty()

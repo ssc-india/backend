@@ -22,7 +22,10 @@ const app = express();
 
 app.set('trust proxy', true);
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.ORIGIN_WHITELIST,
+    credentials: true
+}));
 app.use(json());
 app.use(cookieSession({
     signed: false,

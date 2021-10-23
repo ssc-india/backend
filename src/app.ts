@@ -18,10 +18,15 @@ import { contentDeleteRouter } from './routes/content/delete';
 
 import { instituteShowRouter } from './routes/institute/show';
 
+// REMOVE in prod
+import dotenv from 'dotenv';
+dotenv.config();
+
 const app = express();
 
 app.set('trust proxy', true);
 
+console.log(process.env.ORIGIN_WHITELIST);
 app.use(cors({
     origin: process.env.ORIGIN_WHITELIST,
     credentials: true

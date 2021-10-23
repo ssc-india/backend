@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import { UserDoc } from './User';
 
 export enum ContentTag {
-    INFO='INFO',
-    BLOG='Blog'
+    INFO='generic',
+    BLOG='blog'
 }
 
 export interface ContentType {

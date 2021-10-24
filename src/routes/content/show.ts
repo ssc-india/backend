@@ -34,7 +34,7 @@ router.get('/content/show', async (req: Request, res: Response) => {
         
         if (tag) query['tag'] = tag;
 
-        posts = await Content.find(query); 
+        posts = await Content.find(query).populate('author'); 
     }
      
     res.status(200).send({ posts });

@@ -1,9 +1,8 @@
+import { ErrorType } from './errorType';
+
 export abstract class CustomError extends Error {
     abstract statusCode: number;
-    abstract serializeError(): {
-        message: string;
-        field?: string;
-    }[];
+    abstract serializeError(): ErrorType[];
 
     constructor(message: string) {
         super(message);

@@ -16,7 +16,7 @@ interface QueryParams {
 router.get('/content/show', async (req: Request, res: Response) => {
     let posts: ContentDoc[] = [];
     if (Object.keys(req.query).length === 0) {
-       posts = await Content.find();
+       posts = await Content.find().populate('author');
      } else {
         const { id, institute, branch, tag } = req.query as QueryParams; 
         const query: { [key: string]: string } = {};

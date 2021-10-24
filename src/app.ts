@@ -26,7 +26,6 @@ const app = express();
 
 app.set('trust proxy', true);
 
-console.log(process.env.ORIGIN_WHITELIST);
 app.use(cors({
     origin: process.env.ORIGIN_WHITELIST,
     credentials: true

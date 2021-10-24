@@ -2,8 +2,15 @@ import mongoose from 'mongoose';
 import { UserDoc } from './User';
 
 export enum ContentTag {
-    INFO='INFO',
-    BLOG='Blog'
+    INFO='generic',
+    BLOG='blog'
+}
+
+export interface ContentType {
+    type: string;
+    src?: string;
+    description?: string;
+    content?: string;
 }
 
 interface ContentAttrs {
@@ -13,7 +20,7 @@ interface ContentAttrs {
     tag: ContentTag;
     timestamp: Date;
     title: string;
-    content: string;
+    content: ContentType[];
 }
 
 export interface ContentDoc extends mongoose.Document {
@@ -23,7 +30,7 @@ export interface ContentDoc extends mongoose.Document {
     tag: ContentTag;
     timestamp: Date;
     title: string;
-    content: string;
+    content: ContentType[];
 }
 
 interface ContentModel extends mongoose.Model<ContentDoc> {
@@ -58,7 +65,7 @@ const ContentSchema = new mongoose.Schema<ContentDoc>({
         required: true
     },
     content: {
-        type: String,
+        type: [Object],
         required: true
     }
 }, {

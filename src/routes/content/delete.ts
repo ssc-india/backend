@@ -16,12 +16,13 @@ interface UserInfo {
     email: string;
 }
 
-router.post('/content/edit', requireAuth, [
+router.post('/content/delete', requireAuth, [
     body('postId')
         .not()
         .isEmpty()
+        .withMessage('Please provide a valid Post ID')
         .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-        .withMessage('Please provide a valid Post ID'),
+        .withMessage('Post ID is invalid'),
 ],
 validateRequest,
 async (req: Request, res: Response) => {
@@ -38,7 +39,7 @@ async (req: Request, res: Response) => {
 
         if (content.get('author').email === user.get('email') || user.get('type') === UserType.MODERATOR) {
             try {
-                const deletedContent = Content.findByIdAndDelete(postId);
+                const deletedContent = await Content.findByIdAndDelete(postId);
                 res.status(200).send(deletedContent);
             } catch (err) {
                 throw new BadRequestError('Requested content not found');

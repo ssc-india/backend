@@ -5,10 +5,12 @@ import { BadRequestError } from '../../errors/BadRequestError';
 import { Content, ContentDoc } from '../../models/Content';
 
 const router = Router();
+
 interface QueryParams {
     id?: string;
     institute?: string;
     branch?: string;
+    tag?: string;
 }
 
 router.get('/content/show', async (req: Request, res: Response) => {
@@ -16,7 +18,7 @@ router.get('/content/show', async (req: Request, res: Response) => {
     if (Object.keys(req.query).length === 0) {
        posts = await Content.find();
      } else {
-        const { id, institute, branch } = req.query as QueryParams; 
+        const { id, institute, branch, tag } = req.query as QueryParams; 
         const query: { [key: string]: string } = {};
         if (id) {
             if (mongoose.Types.ObjectId.isValid(id)) {
@@ -29,8 +31,10 @@ router.get('/content/show', async (req: Request, res: Response) => {
         if (institute) query['institute'] = institute;
 
         if (branch) query['branch'] = branch;
-            
-        posts = await Content.find(query); 
+        
+        if (tag) query['tag'] = tag;
+
+        posts = await Content.find(query).populate('author'); 
     }
      
     res.status(200).send({ posts });

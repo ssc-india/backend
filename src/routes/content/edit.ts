@@ -5,10 +5,11 @@ import jwt from 'jsonwebtoken';
 
 import { validateRequest } from '../../middlewares/validateRequest';
 import { requireAuth } from '../../middlewares/requireAuth';
-import { Content } from '../../models/Content';
+import { Content, ContentType } from '../../models/Content';
 import { User } from '../../models/User';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { ForbiddenError } from '../../errors/ForbiddenError';
+
 const router = Router();
 
 interface UserInfo {
@@ -19,8 +20,9 @@ router.post('/content/edit', requireAuth, [
     body('postId')
         .not()
         .isEmpty()
+        .withMessage('Please provide a valid Post ID')
         .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-        .withMessage('Please provide a valid Post ID'),
+        .withMessage('Post ID is invalid'),
     body('content')
         .not()
         .isEmpty()
@@ -28,24 +30,22 @@ router.post('/content/edit', requireAuth, [
 ],
 validateRequest,
 async (req: Request, res: Response) => {
-    const { postId, content } = req.body; 
+    const { postId } = req.body; 
+    const content = req.body.content as ContentType[];
     const userInfo = jwt.verify(req.session?.jwt, process.env.JWT_KEY!) as UserInfo;
     const user = await User.findOne({ email: userInfo.email });
     if (!user) {
         throw new BadRequestError('Invalid user')
     } else {
-        const OldContent = await Content.findById(postId).populate('author');
-        if (!OldContent) {
+        const oldContent = await Content.findById(postId).populate('author');
+        if (!oldContent) {
             throw new BadRequestError('Content not found');
         }
 
-        if (OldContent.get('author').email === user.get('email')) {
-            try {
-                const updatedContent = await Content.findByIdAndUpdate(postId, { content });
-                res.status(200).send(updatedContent);
-            } catch (err) {
-                throw new BadRequestError('Requested content not found');
-            }
+        if (oldContent.get('author').email === user.get('email')) {
+           oldContent.content = content;
+           await oldContent.save();
+           res.status(200).send(oldContent);
         } else {
             throw new ForbiddenError('Only the author of the post can perform this action');
         }

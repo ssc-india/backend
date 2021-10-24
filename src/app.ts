@@ -16,11 +16,20 @@ import { contentShowRouter } from './routes/content/show';
 import { contentEditRouter } from './routes/content/edit';
 import { contentDeleteRouter } from './routes/content/delete';
 
+import { instituteShowRouter } from './routes/institute/show';
+
+// REMOVE in prod
+import dotenv from 'dotenv';
+dotenv.config();
+
 const app = express();
 
 app.set('trust proxy', true);
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.ORIGIN_WHITELIST,
+    credentials: true
+}));
 app.use(json());
 app.use(cookieSession({
     signed: false,
@@ -35,6 +44,8 @@ app.use(contentCreateRouter);
 app.use(contentShowRouter);
 app.use(contentEditRouter);
 app.use(contentDeleteRouter);
+
+app.use(instituteShowRouter);
 
 app.all('*', () => {
     throw new NotFoundError();

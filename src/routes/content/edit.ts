@@ -9,6 +9,7 @@ import { Content, ContentType } from '../../models/Content';
 import { User } from '../../models/User';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { ForbiddenError } from '../../errors/ForbiddenError';
+
 const router = Router();
 
 interface UserInfo {
@@ -19,8 +20,9 @@ router.post('/content/edit', requireAuth, [
     body('postId')
         .not()
         .isEmpty()
+        .withMessage('Please provide a valid Post ID')
         .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-        .withMessage('Please provide a valid Post ID'),
+        .withMessage('Post ID is invalid'),
     body('content')
         .not()
         .isEmpty()
@@ -35,18 +37,15 @@ async (req: Request, res: Response) => {
     if (!user) {
         throw new BadRequestError('Invalid user')
     } else {
-        const OldContent = await Content.findById(postId).populate('author');
-        if (!OldContent) {
+        const oldContent = await Content.findById(postId).populate('author');
+        if (!oldContent) {
             throw new BadRequestError('Content not found');
         }
 
-        if (OldContent.get('author').email === user.get('email')) {
-            try {
-                const updatedContent = await Content.findByIdAndUpdate(postId, { content });
-                res.status(200).send(updatedContent);
-            } catch (err) {
-                throw new BadRequestError('Requested content not found');
-            }
+        if (oldContent.get('author').email === user.get('email')) {
+           oldContent.content = content;
+           await oldContent.save();
+           res.status(200).send(oldContent);
         } else {
             throw new ForbiddenError('Only the author of the post can perform this action');
         }

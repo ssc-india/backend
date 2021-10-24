@@ -30,7 +30,7 @@ async (req: Request, res: Response) => {
     const userInfo = jwt.verify(req.session?.jwt, process.env.JWT_KEY!) as UserInfo;
     const author = await User.findOne({ email: userInfo.email });
     if(!author) {
-        throw new BadRequestError('Invalid User');
+        throw new BadRequestError('Invalid user');
     }
 
     const existingInstitute = await Institute.findOne({ name: institute });

@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { validateRequest } from '../../middlewares/validateRequest';
 import { User, UserType } from '../../models/User';
-import { Password } from '../../services/Password';
 
 const router = Router();
 
@@ -26,8 +25,7 @@ async (req: Request, res: Response) => {
         throw new BadRequestError('Email already in use!');
     }
 
-    const hashedPassword = await Password.toHash(password);
-    const user = User.build({ name, institute, branch, email, password: hashedPassword, type: UserType.REGULAR });
+    const user = User.build({ name, institute, branch, email, password, type: UserType.REGULAR });
     await user.save();
 
     const userJwt = jwt.sign({

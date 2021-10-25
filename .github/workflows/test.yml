@@ -6,7 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      JWT_KEY: ${{ secrets.JWT_KEY }}
+      JWT_KEY: ${{ env.backend.secrets.JWT_KEY }}
     steps:
       - name: Perfrom unit tests
         env:

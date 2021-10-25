@@ -9,6 +9,6 @@ jobs:
         JWT_KEY: ${{ secrets.JWT_KEY }}
     steps:
       - uses: actions/checkout@v2
-      - env:
+        env:
           JWT_KEY: ${{ env.JWT_KEY }}
       - run: npm install && npm run test:ci

@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Perfrom unit tests
         env:
-          JWT_KEY: niranjan
-        run: npm install && npm run test:ci
+          JWT_KEY: ${{ secrets.JWT_KEY }}
+        run: echo $JWT_KEY

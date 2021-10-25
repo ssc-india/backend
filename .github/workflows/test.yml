@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Perfrom unit tests
         env:
-          JWT_KEY: ${{ secrets.JWT_KEY }}
+          JWT_KEY: ${{ env.JWT_KEY }}
         run: echo $JWT_KEY

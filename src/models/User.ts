@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Password } from '../services/Password';
 
 export enum UserType {
     REGULAR='REGULAR',
@@ -63,6 +64,15 @@ const UserSchema = new mongoose.Schema<UserDoc>({
             delete ret.__v;
         }
     }
+});
+
+UserSchema.pre('save', async function(done) {
+    if(this.isModified('password')) {
+        const hashed = await Password.toHash(this.get('password'));
+        this.set('password', hashed);
+    }
+
+    done();
 });
 
 UserSchema.statics.build = (attrs: UserAttrs) => {

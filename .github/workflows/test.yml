@@ -8,5 +8,7 @@ jobs:
     env:
       JWT_KEY: ${{ secrets.JWT_KEY }}
     steps:
-      - uses: actions/checkout@v2
-      - run: echo $JWT_KEY
+      - name: Perfrom unit tests
+        env:
+          JWT_KEY: niranjan
+        run: echo $JWT_KEY

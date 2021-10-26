@@ -37,7 +37,7 @@ async (req: Request, res: Response) => {
     transporter.sendMail({
         from: `"Science Students Collective India" <scistudentscollectiveindia@gmail.com>`,
         to: email,
-        subject: 'Email Verification',
+        subject: 'Verify your email',
         html: getEmailTemplate(name)
     });
     

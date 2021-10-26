@@ -13,6 +13,7 @@ interface UserAttrs {
     email: string;
     password: string;
     type: UserType;
+    isVerified: boolean;
 }
 
 export interface UserDoc extends mongoose.Document {
@@ -22,6 +23,7 @@ export interface UserDoc extends mongoose.Document {
     email: string;
     password: string;
     type: UserType;
+    isVerified: boolean;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -53,6 +55,10 @@ const UserSchema = new mongoose.Schema<UserDoc>({
         type: String,
         enum: Object.values(UserType),
         default: UserType.REGULAR,
+        required: true
+    },
+    isVerified: {
+        type: Boolean,
         required: true
     }
 }, {

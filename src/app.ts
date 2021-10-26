@@ -10,6 +10,7 @@ import { NotFoundError } from './errors/NotFoundError';
 import { signupRouter } from './routes/auth/signup';
 import { signinRouter } from './routes/auth/signin';
 import { signoutRouter } from './routes/auth/signout';
+import { verifyEmailRouter } from './routes/auth/verifyEmail';
 
 import { contentCreateRouter } from './routes/content/create';
 import { contentShowRouter } from './routes/content/show';
@@ -35,6 +36,7 @@ app.use(cookieSession({
 app.use(signupRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
+app.use(verifyEmailRouter);
 
 app.use(contentCreateRouter);
 app.use(contentShowRouter);

@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken';
 import { BadRequestError } from '../../errors/BadRequestError';
 import { validateRequest } from '../../middlewares/validateRequest';
 import { User, UserType } from '../../models/User';
+import { PendingVerification } from '../../models/PendingVerification';
+import { transporter } from '../../services/EmailTransporter';
+import { getEmailTemplate } from '../../templates/EmailVerification';
 
 const router = Router();
 
@@ -25,9 +28,19 @@ async (req: Request, res: Response) => {
         throw new BadRequestError('Email already in use!');
     }
 
-    const user = User.build({ name, institute, branch, email, password, type: UserType.REGULAR });
+    const user = User.build({ name, institute, branch, email, password, type: UserType.REGULAR, isVerified: false });
     await user.save();
 
+    const verificationEntry = PendingVerification.build({ userId: user.get('_id'), timestamp: new Date() });
+    await verificationEntry.save();
+
+    transporter.sendMail({
+        from: `"Science Students Collective India" <scistudentscollectiveindia@gmail.com>`,
+        to: email,
+        subject: 'Email Verification',
+        html: getEmailTemplate(name)
+    });
+    
     const userJwt = jwt.sign({
         id: user.id,
         email: user.email

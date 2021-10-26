@@ -4,6 +4,7 @@ import { User } from '../../../models/User';
 import { Password } from '../../../services/Password';
 import { signup, clearDB, checkErrors } from '../../../test/utils';
 import { ErrorType } from '../../../errors/errorType';
+import { transporter } from '../../../services/EmailTransporter';
 
 describe('Test the signout functionality', () => {
 
@@ -83,7 +84,22 @@ describe('Test the signout functionality', () => {
         expect(passwordsMatch).toEqual(true);
     });
 
-    it('generates a cookie with session info and sends it back to the client', async () => {
+    it('sends an email to the user', async () => {
+        await request(app)
+            .post('/auth/signup')
+            .send({
+                name: 'Niranjan Kamath',
+                institute: 'IIT Madras',
+                branch: 'Physics',
+                email: 'niranjan@test.com',
+                password: 'password'
+            })
+            .expect(201);
+
+        expect(transporter.sendMail).toHaveBeenCalled();
+    });
+
+    it('generates and sends a cookie back with the user info', async () => {
         const response = await request(app)
             .post('/auth/signup')
             .send({

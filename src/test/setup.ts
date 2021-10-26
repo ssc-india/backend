@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import app from '../app';
 import { initializeContent, clearContent, clearDB } from './utils';
 
+jest.mock('../services/EmailTransporter');
+
 let mongo: any;
 beforeAll(async () => {
     mongo = await MongoMemoryServer.create();

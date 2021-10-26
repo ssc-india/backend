@@ -21,14 +21,24 @@ router.post('/auth/signup', [
 ],
 validateRequest,
 async (req: Request, res: Response) => {
-    const { name, institute, branch, email, password } = req.body;
+    const { name, username, institute, branch, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         throw new BadRequestError('Email already in use!');
     }
 
-    const user = User.build({ name, institute, branch, email, password, type: UserType.REGULAR, isVerified: false });
+    const user = User.build({
+        name,
+        username,
+        institute,
+        branch,
+        email,
+        password,
+        type: UserType.REGULAR,
+        isVerified: false
+    });
+
     await user.save();
 
     const verificationEntry = PendingVerification.build({ userId: user.get('_id'), timestamp: new Date() });

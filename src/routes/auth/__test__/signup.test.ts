@@ -56,14 +56,14 @@ describe('Test the signout functionality', () => {
         checkErrors((response.body.errors as ErrorType[]), 1, ['Password must be at least 8 characters long']);
     });
 
-    it('checks if the user already exists', async () => {
+    it('checks if the user already exists based on both email and username', async () => {
         await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
 
-        const response = await request(app)
+        let response = await request(app)
             .post('/auth/signup')
             .send({
                 name: 'Niranjan Kamath',
-                username: 'niranjankamath',
+                username: 'niranjankamathnew',
                 institute: 'IIT Madras',
                 branch: 'Physics',
                 email: 'nk@test.com',
@@ -72,6 +72,20 @@ describe('Test the signout functionality', () => {
             .expect(400);
 
         checkErrors((response.body.errors as ErrorType[]), 1, ['Email already in use!']);
+
+        response = await request(app)
+            .post('/auth/signup')
+            .send({
+                name: 'Niranjan Kamath',
+                username: 'niranjankamath',
+                institute: 'IIT Madras',
+                branch: 'Physics',
+                email: 'nknew@test.com',
+                password: 'password'
+            })
+            .expect(400);
+
+        checkErrors((response.body.errors as ErrorType[]), 1, ['Username already taken']);
     });
 
     it('adds user to the database if all the tests pass', async () => {

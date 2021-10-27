@@ -34,9 +34,14 @@ validateRequest,
 async (req: Request, res: Response) => {
     const { name, username, institute, branch, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ $or: [ { email }, { username } ] });
     if (existingUser) {
-        throw new BadRequestError('Email already in use!');
+        if (existingUser.get('email') === email) {
+            throw new BadRequestError('Email already in use!');
+        }
+        if (existingUser.get('username') === username) {
+            throw new BadRequestError('Username already taken');
+        }
     }
 
     const user = User.build({

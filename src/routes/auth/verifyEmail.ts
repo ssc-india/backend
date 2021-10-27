@@ -33,6 +33,13 @@ router.post('/auth/verify_email', async (req: Request, res: Response) => {
         throw new BadRequestError('Invalid user');
     }
     user.isVerified = true;
+    
+    // delete the verification entry
+    try {
+        await PendingVerification.findByIdAndDelete(id);
+    } catch (err) {
+        throw new Error(`Error deleting verification entry: ${err}`);
+    }
 
     // send success status if all checks pass
     res.status(200).send();

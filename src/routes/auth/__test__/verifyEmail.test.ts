@@ -68,10 +68,13 @@ describe('Test the email verification functionality', () => {
         await resetVerificationEntry(verificationEntry, 'userId', currentUserId);
     });
 
-    it('sets the user as being verified', async () => {
+    it('sets the user as being verified and deletes the verification entry', async () => {
         await request(app)
             .post('/auth/verify_email')
             .send({ id: testId })
             .expect(200);
+        
+        const verificationEntry = await PendingVerification.findById(testId);
+        expect(verificationEntry).toBeNull();
     });
 })

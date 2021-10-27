@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../../app';
 import { clearDB, signup, checkErrors } from '../../../test/utils';
-import { PendingVerification } from '../../../models';
+import { User, PendingVerification } from '../../../models';
 import { ErrorType } from '../../../errors';
 import mongoose from 'mongoose';
 
@@ -74,6 +74,10 @@ describe('Test the email verification functionality', () => {
             .send({ id: testId })
             .expect(200);
         
+        const user = await User.findOne({ email: 'nktest@test.com' });
+        expect(user).toBeDefined();
+        expect(user!.isVerified).toBe(true);
+
         const verificationEntry = await PendingVerification.findById(testId);
         expect(verificationEntry).toBeNull();
     });

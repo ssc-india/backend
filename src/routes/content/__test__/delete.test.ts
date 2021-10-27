@@ -2,7 +2,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 
 import app from '../../../app';
-import { signup, initializeContent, clearDB, checkErrors } from '../../../test/utils';
+import { signup, signin, getFakeCookie, initializeContent, clearDB, checkErrors } from '../../../test/utils';
 import { User } from '../../../models/User';
 import { Content } from '../../../models/Content';
 import jwt from 'jsonwebtoken';
@@ -14,7 +14,8 @@ describe('Test edit functionality for posts', () => {
     
     beforeAll(async () => {
         await clearDB();
-        testCookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        testCookie = await signin('nk@test.com', 'password');  
         const user = (await User.find())[0];
         testId = await initializeContent(user, 1);
     });
@@ -53,8 +54,7 @@ describe('Test edit functionality for posts', () => {
     });
 
     it('fails if the user is invalid', async () => {
-        let fakeCookie = Buffer.from(JSON.stringify({ jwt: jwt.sign({ email: 'fake@abc.com' }, process.env.JWT_KEY!) })).toString('base64');
-        fakeCookie = `express:sess=${fakeCookie}`;
+        let fakeCookie = getFakeCookie('fake@abc.com');
         const response = await request(app)
             .post('/content/delete')
             .set('Cookie', fakeCookie)
@@ -76,7 +76,8 @@ describe('Test edit functionality for posts', () => {
     });
 
     it('fails if the user is not the author of the post', async () => { 
-        const fakeCookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abcabc@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abcabc@test.com', 'password');
+        const fakeCookie = await signin('abcabc@test.com', 'password'); 
         const response = await request(app)
             .post('/content/delete')
             .set('Cookie', fakeCookie)

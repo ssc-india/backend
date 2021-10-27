@@ -57,7 +57,18 @@ export const signup = async (name: string, username: string, institute: string, 
     const cookie = response.get('Set-Cookie');
 
     return cookie;
-};
+}
+
+export const signin = async (email: string, password: string) => {
+    const response = await request(app)
+            .post('/auth/signin')
+            .send({ email, password })
+            .expect(200)
+    
+    const cookie = response.get('Set-Cookie');
+
+    return cookie;
+}
 
 export const clearDB = async () => {
     const collections = await mongoose.connection.db.collections();

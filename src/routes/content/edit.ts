@@ -3,12 +3,9 @@ import { body } from 'express-validator';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-import { validateRequest } from '../../middlewares/validateRequest';
-import { requireAuth } from '../../middlewares/requireAuth';
-import { Content, ContentType } from '../../models/Content';
-import { User } from '../../models/User';
-import { BadRequestError } from '../../errors/BadRequestError';
-import { ForbiddenError } from '../../errors/ForbiddenError';
+import { requireAuth, validateRequest } from '../../middlewares';
+import { User, Content, ContentType } from '../../models';
+import { ForbiddenError, BadRequestError } from '../../errors';
 
 const router = Router();
 

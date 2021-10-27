@@ -1,8 +1,8 @@
 import request from 'supertest';
+
 import app from '../../../app';
 import { clearDB, initializeContent, signup } from '../../../test/utils';
-import { User } from '../../../models/User';
-import { Content, ContentDoc } from '../../../models/Content';
+import { Content, ContentDoc, User } from '../../../models';
 
 describe('Test the show functionality for posts', () => {
     let testId: string = '';

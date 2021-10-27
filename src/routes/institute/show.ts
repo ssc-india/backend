@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { Institute } from '../../models/Institute';
+
+import { Institute } from '../../models';
 
 const router = Router();
 

@@ -1,10 +1,9 @@
 import request from 'supertest'
 import app from '../../../app';
-import { User } from '../../../models/User';
-import { Password } from '../../../services/Password';
+import { User } from '../../../models';
+import { transporter, Password } from '../../../services';
 import { signup, clearDB, checkErrors } from '../../../test/utils';
-import { ErrorType } from '../../../errors/errorType';
-import { transporter } from '../../../services/EmailTransporter';
+import { ErrorType } from '../../../errors';
 
 describe('Test the signout functionality', () => {
 

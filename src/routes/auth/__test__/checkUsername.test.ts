@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../../../app';
 
 import { clearDB, signup, checkErrors } from '../../../test/utils';
-import { ErrorType } from '../../../errors/errorType';
+import { ErrorType } from '../../../errors';
 
 describe('test the username validation route', () => {
 

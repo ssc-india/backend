@@ -1,12 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { BadRequestError } from '../../errors/BadRequestError';
-import { validateRequest } from '../../middlewares/validateRequest';
-import { User, UserType } from '../../models/User';
-import { PendingVerification } from '../../models/PendingVerification';
-import { transporter } from '../../services/EmailTransporter';
-import { getEmailTemplate } from '../../templates/EmailVerification';
+import { BadRequestError } from '../../errors';
+import { validateRequest } from '../../middlewares';
+import { User, UserType, PendingVerification } from '../../models';
+import { transporter } from '../../services';
+import { getEmailTemplate } from '../../templates';
 
 const router = Router();
 

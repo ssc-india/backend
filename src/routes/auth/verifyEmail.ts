@@ -1,8 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { PendingVerification } from '../../models/PendingVerification';
-import { User } from '../../models/User';
-import { BadRequestError } from '../../errors/BadRequestError';
-import { ForbiddenError } from '../../errors/ForbiddenError';
+import { User, PendingVerification } from '../../models';
+import { ForbiddenError, BadRequestError } from '../../errors';
 
 const VERIFICATION_EXPIRATION_MILLISECONDS = 24 * 60 * 60 * 1000; // Verification link expiration time
 

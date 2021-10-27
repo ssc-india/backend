@@ -1,8 +1,8 @@
 import request from 'supertest';
 import app from '../../../app';
 import { clearDB, signup, checkErrors } from '../../../test/utils';
-import { PendingVerification } from '../../../models/PendingVerification';
-import { ErrorType } from '../../../errors/errorType';
+import { PendingVerification } from '../../../models';
+import { ErrorType } from '../../../errors';
 import mongoose from 'mongoose';
 
 describe('Test the email verification functionality', () => {

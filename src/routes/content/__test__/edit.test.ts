@@ -1,12 +1,11 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 import app from '../../../app';
 import { signup, signin, getFakeCookie, initializeContent, clearDB, checkErrors } from '../../../test/utils';
-import { User } from '../../../models/User';
-import { Content } from '../../../models/Content';
-import jwt from 'jsonwebtoken';
-import { ErrorType } from '../../../errors/errorType';
+import { Content, User } from '../../../models';
+import { ErrorType } from '../../../errors';
 
 describe('Test edit functionality for posts', () => {
     let testId: string = '';

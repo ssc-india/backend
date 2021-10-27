@@ -2,9 +2,8 @@ import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import app from '../app';
 import mongoose from 'mongoose';
-import { User, UserDoc } from '../models/User';
-import { Content, ContentTag } from '../models/Content';
-import { ErrorType } from '../errors/errorType';
+import { User, UserDoc, Content, ContentTag } from '../models';
+import { ErrorType } from '../errors';
 
 const institutes = ['IIT Madras', 'IISER Pune', 'IIT Bombay', 'IISER TVM', 'IIT KGP', 'IISER Kolkata'];
 const branches = ['Physics', 'Mathematics', 'Chemistry', 'Biology'];

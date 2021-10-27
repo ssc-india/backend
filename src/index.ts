@@ -1,7 +1,7 @@
 import app from './app';
 import mongoose from 'mongoose'
 
-import { DatabaseConnectionError } from './errors/DatabaseConnectionError';
+import { DatabaseConnectionError } from './errors';
 
 const start = async () => {
     if (!process.env.JWT_KEY) {

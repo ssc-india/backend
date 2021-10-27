@@ -2,12 +2,9 @@ import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
-import { requireAuth } from '../../middlewares/requireAuth';
-import { validateRequest } from '../../middlewares/validateRequest';
-import { User, UserType } from '../../models/User';
-import { Content, ContentType } from '../../models/Content';
-import { Institute, BranchInfo } from '../../models/Institute';
-import { BadRequestError } from '../../errors/BadRequestError';
+import { validateRequest, requireAuth } from '../../middlewares';
+import { User, UserType, Content, ContentType, Institute, BranchInfo } from '../../models';
+import { BadRequestError } from '../../errors';
 
 const router = Router();
 

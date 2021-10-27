@@ -2,9 +2,8 @@ import request from 'supertest';
 
 import app from '../../../app';
 import { signup, signin, clearDB, checkErrors, getFakeCookie } from '../../../test/utils';
-import { Content, ContentTag } from '../../../models/Content';
-import { Institute } from '../../../models/Institute';
-import { ErrorType } from '../../../errors/errorType';
+import { Content, ContentTag, Institute } from '../../../models';
+import { ErrorType } from '../../../errors';
 
 describe('Test the post creation functionality', () => {
 

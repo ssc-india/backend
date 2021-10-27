@@ -4,8 +4,8 @@ import cors from 'cors';
 import cookieSession from 'cookie-session'
 import 'express-async-errors';
 
-import { errorHandler } from './middlewares/errorHandler';
-import { NotFoundError } from './errors/NotFoundError';
+import { errorHandler } from './middlewares';
+import { NotFoundError } from './errors';
 
 import { signupRouter } from './routes/auth/signup';
 import { signinRouter } from './routes/auth/signin';

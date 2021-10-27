@@ -60,7 +60,7 @@ async (req: Request, res: Response) => {
         from: `"Science Students Collective India" <scistudentscollectiveindia@gmail.com>`,
         to: email,
         subject: 'Verify your email',
-        html: getEmailTemplate(name)
+        html: getEmailTemplate(name, verificationEntry.get('_id'))
     });
     
     res.status(201).send(user);

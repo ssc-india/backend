@@ -1,4 +1,4 @@
-const getEmailTemplate = (name: string) => {
+const getEmailTemplate = (name: string, id: string) => {
     return ` 
         <html>
             <head>
@@ -41,7 +41,7 @@ const getEmailTemplate = (name: string) => {
                     <p>
                         We recently received a registration request from you for signing up on ssc-india.github.io. Please click the link below to verify your email
                         <div id="link-container">
-                            <a id="link" href="https://ssc-india.github.io/verify/1234">Verify Email</a>
+                            <a id="link" href="https://ssc-india.github.io/verify/${id}">Verify Email</a>
                         </div>
                         <p>
                             If you face trouble verifying your email address, please contact our support team at <a href="https://ssc-india.github.io/support">https://ssc-india.github.io/support</a>

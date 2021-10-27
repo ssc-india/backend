@@ -107,7 +107,7 @@ describe('Test edit functionality for posts', () => {
     });
 
     it('fails if the user is not the author of the post', async () => { 
-        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abcabc@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamathnew', 'IIT Madras', 'Physics', 'abcabc@test.com', 'password');
         const fakeCookie = await signin('abcabc@test.com', 'password');
         const response = await request(app)
             .post('/content/edit')

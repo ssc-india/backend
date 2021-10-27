@@ -9,7 +9,7 @@ describe('Test the show functionality for posts', () => {
 
     beforeAll(async () => {
         await clearDB();
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
         const user = (await User.find())[0];
         testId = await initializeContent(user, 10);
     });

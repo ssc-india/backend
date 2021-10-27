@@ -41,11 +41,12 @@ export const clearContent = async () => {
     await Content.deleteMany();
 }
 
-export const signup = async (name: string, institute: string, branch: string, email: string, password: string) => {
+export const signup = async (name: string, username: string, institute: string, branch: string, email: string, password: string) => {
     const response = await request(app)
             .post('/auth/signup')
             .send({
                 name,
+                username,
                 institute,
                 branch,
                 email,

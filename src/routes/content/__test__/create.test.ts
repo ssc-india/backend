@@ -31,7 +31,7 @@ describe('Test the post creation functionality', () => {
     });
 
     it('fails if no content is provided', async () => {
-        const cookie = await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'abc@abc.com', 'password');
+        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abc@abc.com', 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)
@@ -70,7 +70,7 @@ describe('Test the post creation functionality', () => {
 
     it('succesfully creates the new content', async () => {
         const user = 'abc1@abc.com';
-        const cookie = await signup('Niranjan Kamath', 'IIT Madras', 'Physics', user, 'password');
+        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', user, 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)
@@ -99,7 +99,7 @@ describe('Test the post creation functionality', () => {
         const instituteEntry = Institute.build({ name: 'IIT Madras', branches: [{ name: 'Mathematics' }] });
         await instituteEntry.save();
         
-        const cookie = await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
+        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)
@@ -127,7 +127,7 @@ describe('Test the post creation functionality', () => {
         const instituteEntry = Institute.build({ name: 'IIT Madras', branches: [{ name: 'Mathematics' }] });
         await instituteEntry.save();
         
-        const cookie = await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
+        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)

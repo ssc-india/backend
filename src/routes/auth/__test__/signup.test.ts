@@ -10,13 +10,19 @@ describe('Test the signout functionality', () => {
 
     beforeEach(async () => { await clearDB() });
 
-    it('throws a bad request error if either email or password is missing', async () => {
+    it('throws a bad request error if required fields are missing', async () => {
         const response = await request(app)
             .post('/auth/signup')
-            .send({});
+            .send({})
+            .expect(400);
 
-        expect(response.status).toEqual(400);
-        checkErrors((response.body.errors as ErrorType[]), 2, ['Please provide a valid email', 'Password must be at least 8 characters long']); 
+        checkErrors((response.body.errors as ErrorType[]), 5, [
+            'Please provide a valid email',
+            'Password must be at least 8 characters long',
+            'Please provide a username',
+            'Please provide the institute you are studying in',
+            'Please provide the branch you are enrolled in'
+        ]); 
     });
 
     it('throws a bad request error if email is invalid', async () => {
@@ -24,13 +30,14 @@ describe('Test the signout functionality', () => {
             .post('/auth/signup')
             .send({
                 name: 'Niranjan Kamath',
+                username: 'niranjankamath',
                 institute: 'IIT Madras',
                 branch: 'Physics',
                 email: 'nk@testcom',
                 password: 'password'
-            });
+            })
+            .expect(400);
 
-        expect(response.status).toEqual(400);
         checkErrors((response.body.errors as ErrorType[]), 1, ['Please provide a valid email']);
     });
 
@@ -39,45 +46,38 @@ describe('Test the signout functionality', () => {
             .post('/auth/signup')
             .send({
                 name: 'Niranjan Kamath',
+                username: 'niranjankamath',
                 institute: 'IIT Madras',
                 branch: 'Physics',
                 email: 'nk@test.com',
                 password: 'pass'
-            });
+            })
+            .expect(400);
 
-        expect(response.status).toEqual(400);
         checkErrors((response.body.errors as ErrorType[]), 1, ['Password must be at least 8 characters long']);
     });
 
     it('checks if the user already exists', async () => {
-        await request(app)
-            .post('/auth/signup')
-            .send({
-                name: 'Niranjan Kamath',
-                institute: 'IIT Madras',
-                branch: 'Physics',
-                email: 'nk@test.com',
-                password: 'password'
-            })
-            .expect(201);
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
 
         const response = await request(app)
             .post('/auth/signup')
             .send({
                 name: 'Niranjan Kamath',
+                username: 'niranjankamath',
                 institute: 'IIT Madras',
                 branch: 'Physics',
                 email: 'nk@test.com',
                 password: 'password'
-            });
+            })
+            .expect(400);
 
-        expect(response.status).toEqual(400);
         checkErrors((response.body.errors as ErrorType[]), 1, ['Email already in use!']);
     });
 
     it('adds user to the database if all the tests pass', async () => {
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nk@gmail.com', 'password');
-        const existingUser = await User.findOne({ email: 'nk@gmail.com' });
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        const existingUser = await User.findOne({ email: 'nk@test.com' });
         expect(existingUser).toBeDefined();
         
         const passwordsMatch = await Password.compare(existingUser!.get('password'), 'password');
@@ -85,16 +85,7 @@ describe('Test the signout functionality', () => {
     });
 
     it('sends an email to the user', async () => {
-        await request(app)
-            .post('/auth/signup')
-            .send({
-                name: 'Niranjan Kamath',
-                institute: 'IIT Madras',
-                branch: 'Physics',
-                email: 'niranjan@test.com',
-                password: 'password'
-            })
-            .expect(201);
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
 
         expect(transporter.sendMail).toHaveBeenCalled();
     });
@@ -104,9 +95,10 @@ describe('Test the signout functionality', () => {
             .post('/auth/signup')
             .send({
                 name: 'Niranjan Kamath',
+                username: 'niranjankamath',
                 institute: 'IIT Madras',
                 branch: 'Physics',
-                email: 'niranjan@test.com',
+                email: 'nk@test.com',
                 password: 'password'
             })
             .expect(201);

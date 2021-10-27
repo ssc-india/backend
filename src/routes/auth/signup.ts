@@ -17,7 +17,19 @@ router.post('/auth/signup', [
     body('password')
         .trim()
         .isLength({ min: 8 })
-        .withMessage('Password must be at least 8 characters long')
+        .withMessage('Password must be at least 8 characters long'),
+    body('username')
+        .not()
+        .isEmpty()
+        .withMessage('Please provide a username'),
+    body('institute')
+        .not()
+        .isEmpty()
+        .withMessage('Please provide the institute you are studying in'),
+    body('branch')
+        .not()
+        .isEmpty()
+        .withMessage('Please provide the branch you are enrolled in')
 ],
 validateRequest,
 async (req: Request, res: Response) => {

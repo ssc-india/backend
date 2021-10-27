@@ -58,10 +58,10 @@ export const signup = async (name: string, username: string, institute: string, 
     return cookie;
 }
 
-export const signin = async (email: string, password: string) => {
+export const signin = async (identity: string, password: string) => {
     const response = await request(app)
             .post('/auth/signin')
-            .send({ email, password })
+            .send({ identity, password })
             .expect(200)
     
     const cookie = response.get('Set-Cookie');

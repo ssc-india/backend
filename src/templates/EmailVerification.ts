@@ -39,13 +39,10 @@ const getEmailTemplate = (name: string, id: string) => {
                     <h1>Verify your Email Address</h1>
                     Hi, ${name}<br>
                     <p>
-                        We recently received a registration request from you for signing up on ssc-india.github.io. Please click the link below to verify your email
+                        We recently received a registration request from you for signing up on ${process.env.FRONTEND_URL}. Please click the link below to verify your email
                         <div id="link-container">
-                            <a id="link" href="https://ssc-india.github.io/verify/${id}">Verify Email</a>
+                            <a id="link" href="${process.env.FRONTEND_URL}/verify/${id}">Verify Email</a>
                         </div>
-                        <p>
-                            If you face trouble verifying your email address, please contact our support team at <a href="https://ssc-india.github.io/support">https://ssc-india.github.io/support</a>
-                        </p>
                     </p>
                 </div>
             <body>

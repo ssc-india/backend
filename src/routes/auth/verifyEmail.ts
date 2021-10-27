@@ -31,6 +31,7 @@ router.post('/auth/verify_email', async (req: Request, res: Response) => {
         throw new BadRequestError('Invalid user');
     }
     user.isVerified = true;
+    await user.save();
     
     // delete the verification entry
     try {

@@ -10,7 +10,7 @@ describe('Test the email verification functionality', () => {
 
     beforeAll(async () => {
         await clearDB();
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nktest@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nktest@test.com', 'password');
         const newVerificationEntry = (await PendingVerification.find())[0];
         testId = newVerificationEntry.get('_id');
     });

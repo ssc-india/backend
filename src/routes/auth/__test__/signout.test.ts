@@ -7,7 +7,7 @@ describe('Test the signout functionality', () => {
     beforeEach(async () => { await clearDB() });
 
     it('clears the cookie after signing out', async () => {
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
         const response = await request(app)
             .post('/auth/signout')
             .send({})

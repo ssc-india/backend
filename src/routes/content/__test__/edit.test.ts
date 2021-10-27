@@ -14,7 +14,7 @@ describe('Test edit functionality for posts', () => {
     
     beforeAll(async () => {
         await clearDB();
-        testCookie = await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        testCookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
         const user = (await User.find())[0];
         testId = await initializeContent(user, 1);
     });
@@ -107,7 +107,7 @@ describe('Test edit functionality for posts', () => {
     });
 
     it('fails if the user is not the author of the post', async () => { 
-        const fakeCookie = await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'abcabc@test.com', 'password');
+        const fakeCookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abcabc@test.com', 'password');
         const response = await request(app)
             .post('/content/edit')
             .set('Cookie', fakeCookie)

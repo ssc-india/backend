@@ -20,7 +20,7 @@ describe('Test the signin functionality', () => {
     });
 
     it('fails if the user supplies the incorrect password', async () => {
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
         const response = await request(app)
             .post('/auth/signin')
             .send({
@@ -34,7 +34,7 @@ describe('Test the signin functionality', () => {
     });
 
     it('returns a cookie to the user after successful sign in', async () => {
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'niranjan@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'niranjan@test.com', 'password');
         const response = await request(app)
             .post('/auth/signin')
             .send({

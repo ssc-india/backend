@@ -89,20 +89,4 @@ describe('Test the signout functionality', () => {
 
         expect(transporter.sendMail).toHaveBeenCalled();
     });
-
-    it('generates and sends a cookie back with the user info', async () => {
-        const response = await request(app)
-            .post('/auth/signup')
-            .send({
-                name: 'Niranjan Kamath',
-                username: 'niranjankamath',
-                institute: 'IIT Madras',
-                branch: 'Physics',
-                email: 'nk@test.com',
-                password: 'password'
-            })
-            .expect(201);
-
-        expect(response.get('Set-Cookie')).toBeDefined();
-    });
 });

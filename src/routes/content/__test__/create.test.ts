@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import app from '../../../app';
-import { signup, clearDB, checkErrors, getFakeCookie } from '../../../test/utils';
+import { signup, signin, clearDB, checkErrors, getFakeCookie } from '../../../test/utils';
 import { Content, ContentTag } from '../../../models/Content';
 import { Institute } from '../../../models/Institute';
 import { ErrorType } from '../../../errors/errorType';
@@ -31,7 +31,8 @@ describe('Test the post creation functionality', () => {
     });
 
     it('fails if no content is provided', async () => {
-        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abc@abc.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'abc@abc.com', 'password');
+        const cookie = await signin('abc@abc.com', 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)
@@ -70,7 +71,8 @@ describe('Test the post creation functionality', () => {
 
     it('succesfully creates the new content', async () => {
         const user = 'abc1@abc.com';
-        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', user, 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', user, 'password');
+        const cookie = await signin(user, 'password');  
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)
@@ -99,7 +101,8 @@ describe('Test the post creation functionality', () => {
         const instituteEntry = Institute.build({ name: 'IIT Madras', branches: [{ name: 'Mathematics' }] });
         await instituteEntry.save();
         
-        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
+        const cookie = await signin('nknk@test.com', 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)
@@ -127,7 +130,8 @@ describe('Test the post creation functionality', () => {
         const instituteEntry = Institute.build({ name: 'IIT Madras', branches: [{ name: 'Mathematics' }] });
         await instituteEntry.save();
         
-        const cookie = await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nknk@test.com', 'password');
+        const cookie = await signin('nknk@test.com', 'password');
         const response = await request(app)
             .post('/content/create')
             .set('Cookie', cookie)

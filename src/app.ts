@@ -12,6 +12,7 @@ import { signinRouter } from './routes/auth/signin';
 import { signoutRouter } from './routes/auth/signout';
 import { verifyEmailRouter } from './routes/auth/verifyEmail';
 import { checkUsernameRouter } from './routes/auth/checkUsername';
+import { checkUserRouter } from './routes/auth/checkUser';
 
 import { contentCreateRouter } from './routes/content/create';
 import { contentShowRouter } from './routes/content/show';
@@ -39,6 +40,7 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(verifyEmailRouter);
 app.use(checkUsernameRouter);
+app.use(checkUserRouter);
 
 app.use(contentCreateRouter);
 app.use(contentShowRouter);

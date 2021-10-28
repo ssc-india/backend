@@ -6,12 +6,9 @@ import jwt from 'jsonwebtoken';
 import { requireAuth, validateRequest } from '../../middlewares';
 import { User, Content, ContentType } from '../../models';
 import { ForbiddenError, BadRequestError } from '../../errors';
+import { UserInfo } from '../../types';
 
 const router = Router();
-
-interface UserInfo {
-    email: string;
-}
 
 router.post('/content/edit', requireAuth, [
     body('postId')

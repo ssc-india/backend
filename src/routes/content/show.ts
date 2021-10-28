@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
 
-import { BadRequestError } from '../../errors/BadRequestError';
-import { Content, ContentDoc } from '../../models/Content';
+import { BadRequestError } from '../../errors';
+import { Content, ContentDoc } from '../../models';
 
 const router = Router();
 

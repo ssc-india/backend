@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { BadRequestError } from '../../errors/BadRequestError';
-import { validateRequest } from '../../middlewares/validateRequest';
-import { User, UserType } from '../../models/User';
+import { BadRequestError } from '../../errors';
+import { validateRequest } from '../../middlewares';
+import { User, UserType, PendingVerification } from '../../models';
+import { transporter } from '../../services';
+import { getEmailTemplate } from '../../templates';
 
 const router = Router();
 
@@ -14,29 +16,57 @@ router.post('/auth/signup', [
     body('password')
         .trim()
         .isLength({ min: 8 })
-        .withMessage('Password must be at least 8 characters long')
+        .withMessage('Password must be at least 8 characters long'),
+    body('username')
+        .not()
+        .isEmpty()
+        .withMessage('Please provide a username'),
+    body('institute')
+        .not()
+        .isEmpty()
+        .withMessage('Please provide the institute you are studying in'),
+    body('branch')
+        .not()
+        .isEmpty()
+        .withMessage('Please provide the branch you are enrolled in')
 ],
 validateRequest,
 async (req: Request, res: Response) => {
-    const { name, institute, branch, email, password } = req.body;
+    const { name, username, institute, branch, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ $or: [ { email }, { username } ] });
     if (existingUser) {
-        throw new BadRequestError('Email already in use!');
+        if (existingUser.get('email') === email) {
+            throw new BadRequestError('Email already in use!');
+        }
+        if (existingUser.get('username') === username) {
+            throw new BadRequestError('Username already taken');
+        }
     }
 
-    const user = User.build({ name, institute, branch, email, password, type: UserType.REGULAR });
+    const user = User.build({
+        name,
+        username,
+        institute,
+        branch,
+        email,
+        password,
+        type: UserType.REGULAR,
+        isVerified: false
+    });
+
     await user.save();
 
-    const userJwt = jwt.sign({
-        id: user.id,
-        email: user.email
-    }, process.env.JWT_KEY!);
+    const verificationEntry = PendingVerification.build({ userId: user.get('_id'), timestamp: new Date() });
+    await verificationEntry.save();
 
-    req.session = {
-        jwt: userJwt
-    }
-
+    transporter.sendMail({
+        from: `"Science Students Collective India" <scistudentscollectiveindia@gmail.com>`,
+        to: email,
+        subject: 'Verify your email',
+        html: getEmailTemplate(name, verificationEntry.get('_id'))
+    });
+    
     res.status(201).send(user);
 });
 

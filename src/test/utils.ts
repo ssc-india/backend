@@ -2,9 +2,8 @@ import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import app from '../app';
 import mongoose from 'mongoose';
-import { User, UserDoc } from '../models/User';
-import { Content, ContentTag } from '../models/Content';
-import { ErrorType } from '../errors/errorType';
+import { User, UserDoc, Content, ContentTag } from '../models';
+import { ErrorType } from '../errors';
 
 const institutes = ['IIT Madras', 'IISER Pune', 'IIT Bombay', 'IISER TVM', 'IIT KGP', 'IISER Kolkata'];
 const branches = ['Physics', 'Mathematics', 'Chemistry', 'Biology'];
@@ -41,11 +40,12 @@ export const clearContent = async () => {
     await Content.deleteMany();
 }
 
-export const signup = async (name: string, institute: string, branch: string, email: string, password: string) => {
+export const signup = async (name: string, username: string, institute: string, branch: string, email: string, password: string) => {
     const response = await request(app)
             .post('/auth/signup')
             .send({
                 name,
+                username,
                 institute,
                 branch,
                 email,
@@ -56,7 +56,18 @@ export const signup = async (name: string, institute: string, branch: string, em
     const cookie = response.get('Set-Cookie');
 
     return cookie;
-};
+}
+
+export const signin = async (identity: string, password: string) => {
+    const response = await request(app)
+            .post('/auth/signin')
+            .send({ identity, password })
+            .expect(200)
+    
+    const cookie = response.get('Set-Cookie');
+
+    return cookie;
+}
 
 export const clearDB = async () => {
     const collections = await mongoose.connection.db.collections();

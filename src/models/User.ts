@@ -8,20 +8,24 @@ export enum UserType {
 
 interface UserAttrs {
     name: string;
+    username: string;
     institute: string;
     branch: string;
     email: string;
     password: string;
     type: UserType;
+    isVerified: boolean;
 }
 
 export interface UserDoc extends mongoose.Document {
     name: string;
+    username: string;
     institute: string;
     branch: string;
     email: string;
     password: string;
     type: UserType;
+    isVerified: boolean;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -30,6 +34,10 @@ interface UserModel extends mongoose.Model<UserDoc> {
 
 const UserSchema = new mongoose.Schema<UserDoc>({
     name: {
+        type: String,
+        required: true
+    },
+    username: {
         type: String,
         required: true
     },
@@ -53,6 +61,10 @@ const UserSchema = new mongoose.Schema<UserDoc>({
         type: String,
         enum: Object.values(UserType),
         default: UserType.REGULAR,
+        required: true
+    },
+    isVerified: {
+        type: Boolean,
         required: true
     }
 }, {

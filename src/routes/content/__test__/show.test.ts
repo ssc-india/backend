@@ -1,15 +1,15 @@
 import request from 'supertest';
+
 import app from '../../../app';
 import { clearDB, initializeContent, signup } from '../../../test/utils';
-import { User } from '../../../models/User';
-import { Content, ContentDoc } from '../../../models/Content';
+import { Content, ContentDoc, User } from '../../../models';
 
 describe('Test the show functionality for posts', () => {
     let testId: string = '';
 
     beforeAll(async () => {
         await clearDB();
-        await signup('Niranjan Kamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
+        await signup('Niranjan Kamath', 'niranjankamath', 'IIT Madras', 'Physics', 'nk@test.com', 'password');
         const user = (await User.find())[0];
         testId = await initializeContent(user, 10);
     });

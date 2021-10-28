@@ -69,6 +69,7 @@
   },
   "exclude": [
     "src/**/__test__/*.test.ts",
-    "src/test/*"
+    "src/test/*",
+    "src/**/__mocks__/*"
   ]
 }

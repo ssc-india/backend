@@ -41,7 +41,7 @@ const getEmailTemplate = (name: string, id: string) => {
                     <p>
                         We recently received a registration request from you for signing up on ${process.env.FRONTEND_URL}. Please click the link below to verify your email
                         <div id="link-container">
-                            <a id="link" href="${process.env.FRONTEND_URL}/verify/${id}">Verify Email</a>
+                            <a id="link" href="${process.env.FRONTEND_URL}/#/verify/${id}">Verify Email</a>
                         </div>
                     </p>
                 </div>

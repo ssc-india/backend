@@ -1,11 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
+import jwt from 'jsonwebtoken';
+
 import { validateRequest } from '../../middlewares';
 import { BadRequestError } from '../../errors';
 import { User } from '../../models';
 import { Password } from '../../services';
-import jwt from 'jsonwebtoken';
-
+import { UserInfo } from '../../types';
 const router = Router();
 
 router.post('/auth/signin', [
@@ -30,12 +31,14 @@ async (req: Request, res: Response) => {
     if (!passwordsMatch) {
         throw new BadRequestError('Invalid Credentials');
     }
-
-    const userJwt = jwt.sign({
-        id: existingUser.id,
+    
+    const userInfo: UserInfo = {
         email: existingUser.email,
-        username: existingUser.username
-    }, process.env.JWT_KEY!);
+        username: existingUser.username,
+        isVerified: existingUser.isVerified
+    }
+
+    const userJwt = jwt.sign(userInfo, process.env.JWT_KEY!);
 
     req.session = {
         jwt: userJwt

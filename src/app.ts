@@ -12,6 +12,7 @@ import { signinRouter } from './routes/auth/signin';
 import { signoutRouter } from './routes/auth/signout';
 import { verifyEmailRouter } from './routes/auth/verifyEmail';
 import { checkUsernameRouter } from './routes/auth/checkUsername';
+import { checkUserRouter } from './routes/auth/checkUser';
 
 import { contentCreateRouter } from './routes/content/create';
 import { contentShowRouter } from './routes/content/show';
@@ -20,6 +21,7 @@ import { contentDeleteRouter } from './routes/content/delete';
 
 import { instituteShowRouter } from './routes/institute/show';
 
+const DEFAULT_COOKIE_EXPIRY = 30 * 24 * 60 * 60 * 1000;
 const app = express();
 
 app.set('trust proxy', true);
@@ -31,7 +33,8 @@ app.use(cors({
 app.use(json());
 app.use(cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== 'test'
+    secure: process.env.NODE_ENV !== 'test',
+    expires: new Date((new Date()).getTime() + DEFAULT_COOKIE_EXPIRY)
 }));
 
 app.use(signupRouter);
@@ -39,6 +42,7 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(verifyEmailRouter);
 app.use(checkUsernameRouter);
+app.use(checkUserRouter);
 
 app.use(contentCreateRouter);
 app.use(contentShowRouter);

@@ -34,7 +34,7 @@ app.use(json());
 app.use(cookieSession({
     signed: false,
     secure: process.env.NODE_ENV !== 'test',
-    expires: new Date(DEFAULT_COOKIE_EXPIRY)
+    expires: new Date((new Date()).getTime() + DEFAULT_COOKIE_EXPIRY)
 }));
 
 app.use(signupRouter);

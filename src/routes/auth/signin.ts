@@ -33,6 +33,8 @@ async (req: Request, res: Response) => {
     }
     
     const userInfo: UserInfo = {
+        id: existingUser.id,
+        name: existingUser.name,
         email: existingUser.email,
         username: existingUser.username,
         isVerified: existingUser.isVerified

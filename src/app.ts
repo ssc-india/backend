@@ -21,6 +21,7 @@ import { contentDeleteRouter } from './routes/content/delete';
 
 import { instituteShowRouter } from './routes/institute/show';
 
+const DEFAULT_COOKIE_EXPIRY = 2147483647 * 1000;
 const app = express();
 
 app.set('trust proxy', true);
@@ -32,7 +33,8 @@ app.use(cors({
 app.use(json());
 app.use(cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== 'test'
+    secure: process.env.NODE_ENV !== 'test',
+    expires: new Date(DEFAULT_COOKIE_EXPIRY)
 }));
 
 app.use(signupRouter);

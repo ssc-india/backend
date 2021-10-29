@@ -21,7 +21,7 @@ import { contentDeleteRouter } from './routes/content/delete';
 
 import { instituteShowRouter } from './routes/institute/show';
 
-const DEFAULT_COOKIE_EXPIRY = 2147483647 * 1000;
+const DEFAULT_COOKIE_EXPIRY = 30 * 24 * 60 * 60 * 1000;
 const app = express();
 
 app.set('trust proxy', true);

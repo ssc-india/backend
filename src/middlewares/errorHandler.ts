@@ -8,7 +8,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
     }
     
     console.error('Something went wrong', err);
-    res.status(400).send({
+    res.status(500).send({
         errors: [{ message: 'Something went wrong' }]
     });
 }

@@ -34,7 +34,7 @@ app.use(json());
 app.use(cookieSession({
     signed: false,
     secure: process.env.NODE_ENV !== 'test',
-    sameSite: false,
+    sameSite: process.env.NODE_ENV === 'test' ? false : 'none',
     expires: new Date((new Date()).getTime() + DEFAULT_COOKIE_EXPIRY)
 }));
 
